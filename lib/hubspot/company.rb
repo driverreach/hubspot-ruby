@@ -121,6 +121,18 @@ class Hubspot::Company < Hubspot::Resource
 
       true
     end
+
+    # Updates the properties of a company
+    # {http://developers.hubspot.com/docs/methods/companies/update_company}
+    # @param vid [Integer] hubspot company vid
+    # @param params [Hash] hash of properties to update
+    # @return [Hubspot::Company] Company record
+    def update!(vid, params)
+      params.stringify_keys!
+      query = {"properties" => Hubspot::Utils.hash_to_properties(params, key_name: "name")}
+      response = Hubspot::Connection.put_json(UPDATE_COMPANY_PATH, params: { company_id: vid }, body: query)
+      new(response)
+    end
   end
 
   def contacts(opts = {})
@@ -156,5 +168,16 @@ class Hubspot::Company < Hubspot::Resource
 
   def remove_contact(contact)
     self.class.remove_contact(@id, contact.to_i)
+  end
+
+
+  # Updates the properties of a company
+  # {http://developers.hubspot.com/docs/methods/companies/update_company}
+  # @param params [Hash] hash of properties to update
+  # @return [Hubspot::Company] self
+  def update!(params)
+    self.class.update!(vid, params)
+    @properties.merge!(params)
+    self
   end
 end
