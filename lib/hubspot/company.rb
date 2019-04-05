@@ -124,13 +124,13 @@ class Hubspot::Company < Hubspot::Resource
 
     # Updates the properties of a company
     # {http://developers.hubspot.com/docs/methods/companies/update_company}
-    # @param vid [Integer] hubspot company vid
+    # @param id [Integer] hubspot company vid
     # @param params [Hash] hash of properties to update
     # @return [Hubspot::Company] Company record
-    def update!(vid, params)
+    def update!(id, params)
       params.stringify_keys!
       query = {"properties" => Hubspot::Utils.hash_to_properties(params, key_name: "name")}
-      response = Hubspot::Connection.put_json(UPDATE_PATH, params: { company_id: vid }, body: query)
+      response = Hubspot::Connection.put_json(UPDATE_PATH, params: { id: id }, body: query)
       new(response)
     end
   end
