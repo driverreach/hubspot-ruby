@@ -130,7 +130,7 @@ class Hubspot::Company < Hubspot::Resource
     def update!(vid, params)
       params.stringify_keys!
       query = {"properties" => Hubspot::Utils.hash_to_properties(params, key_name: "name")}
-      response = Hubspot::Connection.put_json(UPDATE_COMPANY_PATH, params: { company_id: vid }, body: query)
+      response = Hubspot::Connection.put_json(UPDATE_PATH, params: { company_id: vid }, body: query)
       new(response)
     end
   end
@@ -176,7 +176,7 @@ class Hubspot::Company < Hubspot::Resource
   # @param params [Hash] hash of properties to update
   # @return [Hubspot::Company] self
   def update!(params)
-    self.class.update!(vid, params)
+    self.class.update!(@id, params)
     @properties.merge!(params)
     self
   end
